@@ -5,15 +5,12 @@ import org.example.bot.Bot;
 import org.example.bot.BotSender;
 import org.example.hadith.Hadith;
 import org.example.hadith.HadithRepository;
-import org.example.salauat.SalauatService;
-import org.example.user.User;
-import org.example.user.UserRepository;
+
 import org.example.user.UserService;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -24,7 +21,7 @@ public class SheduledService {
     private final Bot bot;
     private final HadithRepository hadithRepository;
 
-    @Scheduled(cron = "0 0 19 * * *") //cron = "0 0 19 * * *"
+    @Scheduled(cron = "0 0 20 * * *") //cron = "0 0 20 * * *"
     public void sendDailyHadith(){
         var users = userService.getAllUsersCached();
 
@@ -41,24 +38,28 @@ public class SheduledService {
         String arabic_text = hadith.getArabic_text();
         String source = hadith.getSource();
 
-        String message = "— — — — — — — — — —\n" +
+        String message = "\uD83C\uDF38\uD83C\uDF38\uD83C\uDF38\n" +
+                "<b>" + arabic_text+"</b>\n" +
                 "\n" +
-                "\uD83C\uDF38 \uD83C\uDF38\uD83C\uDF38\n" +
-                 arabic_text +
-                "\n\n"
-                + kazakh_text + "\n" +
+                "<i>" + kazakh_text+"</i>\n" +
                 "\n" +
                 "\uD83C\uDF38\uD83C\uDF38\uD83C\uDF38\n" +
                 "\n" +
-                "— \uD83D\uDCDA "+ source +" \n" +
-                "\n" +
-                "— — — — — — — — — —";
+                "— \uD83D\uDCDA <i>" + source+"</i>";
 
         for(var user: users){
             long userId = user.getTelegramId();
 
             sender.send(userId, message, bot);
         }
+    }
+
+    @Scheduled(cron = "0 0 10 * * FRI") //cron = "0 0 10 * * FRI"
+    public void sendJumaNotification(){
+
+        String message = "\uD83C\uDF38 \uD83C\uDF19 <b>Жұма қабыл болсын, досым!</b> \uD83C\uDF19 \uD83C\uDF38\n";
+
+        sender.send(834719205L, message, bot);
 
     }
 }
