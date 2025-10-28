@@ -56,10 +56,14 @@ public class SheduledService {
 
     @Scheduled(cron = "0 0 10 * * FRI") //cron = "0 0 10 * * FRI"
     public void sendJumaNotification(){
-
+        var users = userService.getAllUsersCached();
         String message = "\uD83C\uDF38 \uD83C\uDF19 <b>Жұма қабыл болсын, досым!</b> \uD83C\uDF19 \uD83C\uDF38\n";
 
-        sender.send(834719205L, message, bot);
+        for(var user: users){
+            long userId = user.getTelegramId();
+
+            sender.send(userId, message, bot);
+        }
 
     }
 }
