@@ -128,13 +128,11 @@ public class SalauatService {
                 default -> dto.rank() + ")";
             };
 
-            String line = medal + " <a href=\"https://t.me/" + dto.username() + "\">@" + dto.username() + "</a> — "
-                    + dto.totalCount() + " салауатов\n";
+            String line = medal + " @" + dto.username() + " — " + dto.totalCount() + " салауат\n";
 
             // выделяем текущего пользователя жирным
             if (dto.username().equalsIgnoreCase(currentUsername)) {
-                line = medal + " <b><a href=\"https://t.me/" + dto.username() + "\">@" + dto.username() + "</a></b> — <b>"
-                        + dto.totalCount() + "</b> салауатов\n";
+                line = medal + " <b>@" + dto.username() + "</b> — <b>" + dto.totalCount() + "</b> салауат\n";
             }
 
             sb.append(line);
