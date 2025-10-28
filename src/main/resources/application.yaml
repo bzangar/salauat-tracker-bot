@@ -10,8 +10,8 @@ spring:
     show-sql: true
   data:
     redis:
-      host: localhost
-      port: 6379
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
 
 telegram:
   token: 8298807960:AAFEW-JDsAIIriG16OmqyLIkD-9a-BdJvPE
