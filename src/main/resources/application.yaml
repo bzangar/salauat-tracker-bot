@@ -1,0 +1,22 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/salauat_bot
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  data:
+    redis:
+      host: localhost
+      port: 6379
+
+telegram:
+  token: 8298807960:AAFEW-JDsAIIriG16OmqyLIkD-9a-BdJvPE
+  name: salauat-bot
+
+logging:
+  level:
+    org.springframework.cache: TRACE
