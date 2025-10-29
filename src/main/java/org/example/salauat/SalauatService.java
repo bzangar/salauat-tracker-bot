@@ -77,32 +77,32 @@ public class SalauatService {
             allRankings.add(new UserRankingDto(username, total, rank++));
         }
 
-        // Найдём позицию текущего пользователя
-        Integer userRank = null;
-        for (UserRankingDto dto : allRankings) {
-            if (dto.username().equalsIgnoreCase(currentUsername)) {
-                userRank = dto.rank();
-                break;
-            }
-        }
+//        // Найдём позицию текущего пользователя
+//        Integer userRank = null;
+//        for (UserRankingDto dto : allRankings) {
+//            if (dto.username().equalsIgnoreCase(currentUsername)) {
+//                userRank = dto.rank();
+//                break;
+//            }
+//        }
 
         // Если пользователь не найден (например, не делал салауат)
-        if (userRank == null) {
-            allRankings = allRankings.stream().limit(3).toList(); // просто топ-3
-            return format(allRankings, currentUsername);
-        }
+//        if (userRank == null) {
+//            allRankings = allRankings.stream().toList(); // просто топ-3
+//            return format(allRankings, currentUsername);
+//        }
 
-        // Если в топ-3 → показываем топ-3
-        if (userRank <= 3) {
-            allRankings = allRankings.stream().limit(3).toList();
-            return format(allRankings, currentUsername);
-        }
+//        // Если в топ-3 → показываем топ-3
+//        if (userRank <= 3) {
+//            allRankings = allRankings.stream().limit(3).toList();
+//            return format(allRankings, currentUsername);
+//        }
 
-        // Иначе: топ-3 + сам пользователь
-        List<UserRankingDto> result = new ArrayList<>(allRankings.subList(0, 3));
-        result.add(allRankings.get(userRank - 1)); // добавляем себя
+//        // Иначе: топ-3 + сам пользователь
+//        List<UserRankingDto> result = new ArrayList<>(allRankings.subList(0, 3));
+//        result.add(allRankings.get(userRank - 1)); // добавляем себя
 
-        String message = format(result, currentUsername);
+        String message = format(allRankings, currentUsername);
         return message;
     }
 
