@@ -17,6 +17,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class User implements Serializable {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long telegramId;
 
     private String username;

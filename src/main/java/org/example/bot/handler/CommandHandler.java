@@ -24,15 +24,15 @@ public class CommandHandler {
         String command = update.getMessage().getText();
         Long chatId = update.getMessage().getChatId();
         String username = update.getMessage().getFrom().getUserName();
-        Long userId = update.getMessage().getFrom().getId();
+        //Long userId = update.getMessage().getFrom().getId();
 
-        userService.registerIfAbsent(userId, username);
+        userService.registerIfAbsent(username);
 
         switch (command) {
             case "/start" -> sender.send(chatId, "Salauat Bot-қа қош келдіңіз!\n\nБүгін айтқан салауат санын жазып жіберіңіз 🙌", bot);
 
             case "/today" -> {
-                int total = salauatService.getToday(chatId);
+                int total = salauatService.getToday(username);
                 sender.send(chatId, "Бүгін сіз <b>" + total + "</b> салауат айттыңыз 🌸", bot);
             }
 
@@ -48,7 +48,7 @@ public class CommandHandler {
 
 
             case "/monthTop" -> {
-                String leaderboard = salauatService.getMonthlyRankingExternal(chatId);
+                String leaderboard = salauatService.getMonthlyRankingExternal(username);
 
 //                StringBuilder sb = new StringBuilder("🏆 *Рейтинг за месяц*\n\n");
 //                for (UserRankingDto dto : leaderboard) {

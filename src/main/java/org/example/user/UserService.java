@@ -12,11 +12,10 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    public User registerIfAbsent(Long telegramId, String username) {
-        return userRepository.findById(telegramId)
+    public User registerIfAbsent(String username) {
+        return userRepository.findByUsername(username)
                 .orElseGet(() -> {
                     User newUser = User.builder()
-                            .telegramId(telegramId)
                             .username(username)
                             .build();
                     return userRepository.save(newUser);
@@ -24,13 +23,13 @@ public class UserService {
     }
 
     // Получаем username по telegramId (чтобы сравнивать)
-    @Cacheable(value = "UserNameById", key = "#telegramId")
-    public String getUsernameById(Long telegramId) {
-        User user = userRepository.findById(telegramId)
-                .orElseThrow(()->  new IllegalArgumentException("User not found by telegramId: " + telegramId));
-        // Например:
-        return user.getUsername(); // временно
-    }
+//    @Cacheable(value = "UserNameById", key = "#telegramId")
+//    public String getUsernameById(String telegramId) {
+//        User user = userRepository.findById(telegramId)
+//                .orElseThrow(()->  new IllegalArgumentException("User not found by telegramId: " + telegramId));
+//        // Например:
+//        return user.getUsername(); // временно
+//    }
 
     @Cacheable(value = "allUsers", unless = "#result == null or #result.isEmpty()")
     public List<User> getAllUsersCached(){

@@ -18,17 +18,17 @@ public class SalauatService {
     private final SalauatRepo salauatRepository;
     private final UserService userService;
 
-    @CacheEvict(value = "todayStats", key = "#telegramId")
-    public void addSalauat(Long telegramId, int count) {
+    @CacheEvict(value = "todayStats", key = "#username")
+    public void addSalauat(String username, int count) {
         Salauat s = new Salauat();
-        s.setTelegramId(telegramId);
+        s.setTelegramId(username);
         s.setCount(count);
         s.setDate(LocalDate.now());
         salauatRepository.save(s);
     }
 
     @Cacheable(value = "todayStats", key = "#telegramId")
-    public int getToday(Long telegramId) {
+    public int getToday(String telegramId) {
         return salauatRepository
                 .findByTelegramIdAndDate(telegramId, LocalDate.now())
                 .stream()
@@ -74,13 +74,12 @@ public class SalauatService {
                 .orElse(0);
     }
 
-    public String getMonthlyRankingExternal(Long currentUserId) {
-        String currentUsername = userService.getUsernameById(currentUserId); // вне @Cacheable
-        return getMonthlyRanking(currentUserId, currentUsername);
+    public String getMonthlyRankingExternal(String username) {
+        return getMonthlyRanking(username);
     }
 
     @Cacheable(value = "monthlyLeaderboard", key = "#currentUserId")
-    public String getMonthlyRanking(Long currentUserId, String currentUsername) {
+    public String getMonthlyRanking(String currentUsername) {
         LocalDate start = LocalDate.now().withDayOfMonth(1);
         LocalDate end = LocalDate.now();
 

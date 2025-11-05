@@ -19,7 +19,7 @@ public class Salauat {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long telegramId;
+    private String telegramId;
     private int count;
     private LocalDate date;
 }

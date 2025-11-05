@@ -23,16 +23,16 @@ public class MessageHandler {
         Integer messageId = update.getMessage().getMessageId();
             String text = update.getMessage().getText();
             Long chatId = update.getMessage().getChatId();
-            Long userId = update.getMessage().getFrom().getId();
+            //Long userId = update.getMessage().getFrom().getId();
 
 
         String username = update.getMessage().getFrom().getUserName();
-        userService.registerIfAbsent(userId, username);
+        userService.registerIfAbsent(username);
 
         if (text.matches("\\d+")) {
             int count = Integer.parseInt(text);
-            salauatService.addSalauat(chatId, count);
-            botSender.send(chatId, "+ <b>" + count + "</b> салауат ✅ Машаллах!\n\n(Бүгінге " + salauatService.getToday(chatId)+ "салауат)", bot);
+            salauatService.addSalauat(username, count);
+            botSender.send(chatId, "+ <b>" + count + "</b> салауат ✅ Машаллах!\n\n(Бүгінге " + salauatService.getToday(username)+ " салауат)", bot);
             DeleteMessage deleteMessage = new DeleteMessage();
             deleteMessage.setMessageId(messageId);
             deleteMessage.setChatId(chatId);

@@ -8,12 +8,12 @@ import java.util.List;
 import java.util.Optional;
 
 public interface SalauatRepo extends JpaRepository<Salauat, Long> {
-    List<Salauat> findByTelegramIdAndDate(Long telegramId, LocalDate Date);
+    List<Salauat> findByTelegramIdAndDate(String telegramId, LocalDate Date);
 
     @Query("""
     SELECT u.username, SUM(s.count)
     FROM Salauat s
-    JOIN User u ON s.telegramId = u.telegramId
+    JOIN User u ON s.telegramId = u.username
     GROUP BY u.username
     ORDER BY SUM(s.count) DESC
 """)
@@ -30,7 +30,7 @@ public interface SalauatRepo extends JpaRepository<Salauat, Long> {
     @Query("""
         SELECT u.username AS username, SUM(s.count) AS totalCount
         FROM Salauat s
-        JOIN User u ON s.telegramId = u.telegramId
+        JOIN User u ON s.telegramId = u.username
         WHERE s.date BETWEEN :start AND :end
         GROUP BY u.username
         ORDER BY totalCount DESC
