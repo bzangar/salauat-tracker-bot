@@ -45,7 +45,7 @@ public class Bot extends TelegramLongPollingBot{
             commandHandler.handleCommand(update, this);
         } else {
             // если это обычное сообщение (например, “100”)
-            messageHandler.handleMessage(chatId, messageId, text, this);
+            messageHandler.handleMessage(update, this);
         }
     }
 
