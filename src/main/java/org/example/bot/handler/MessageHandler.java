@@ -33,14 +33,14 @@ public class MessageHandler {
             DeleteMessage deleteMessage = new DeleteMessage();
             deleteMessage.setMessageId(messageId);
             deleteMessage.setChatId(chatId);
-            try{
-                Thread.sleep(2000);
-                bot.execute(deleteMessage);
-            } catch (TelegramApiException e) {
-                throw new RuntimeException(e);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
+//            try{
+//                Thread.sleep(2000);
+//                bot.execute(deleteMessage);
+//            } catch (TelegramApiException e) {
+//                throw new RuntimeException(e);
+//            } catch (InterruptedException e) {
+//                throw new RuntimeException(e);
+//            }
         } else {
             botSender.send(chatId, "Салауат санын санмен жазып жіберші, өтініш 🙏", bot);
         }
