@@ -24,8 +24,9 @@ public class CommandHandler {
         String command = update.getMessage().getText();
         Long chatId = update.getMessage().getChatId();
         String username = update.getMessage().getFrom().getUserName();
+        Long userId = update.getMessage().getFrom().getId();
 
-        userService.registerIfAbsent(chatId, username);
+        userService.registerIfAbsent(userId, username);
 
         switch (command) {
             case "/start" -> sender.send(chatId, "Salauat Bot-қа қош келдіңіз!\n\nБүгін айтқан салауат санын жазып жіберіңіз 🙌", bot);

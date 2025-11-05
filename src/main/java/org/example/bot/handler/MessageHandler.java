@@ -7,6 +7,7 @@ import org.example.salauat.SalauatService;
 import org.example.user.UserService;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage;
+import org.telegram.telegrambots.meta.api.objects.ChatMemberUpdated;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
@@ -22,9 +23,11 @@ public class MessageHandler {
         Integer messageId = update.getMessage().getMessageId();
             String text = update.getMessage().getText();
             Long chatId = update.getMessage().getChatId();
+            Long userId = update.getMessage().getFrom().getId();
+
 
         String username = update.getMessage().getFrom().getUserName();
-        userService.registerIfAbsent(chatId, username);
+        userService.registerIfAbsent(userId, username);
 
         if (text.matches("\\d+")) {
             int count = Integer.parseInt(text);
