@@ -1,11 +1,10 @@
 package org.example.salauat;
 
 import lombok.RequiredArgsConstructor;
-import org.example.user.User;
 import org.example.user.UserRankingDto;
-import org.example.user.UserRepository;
 import org.example.user.UserService;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -37,14 +36,34 @@ public class SalauatService {
                 .sum();
     }
 
-    public List<String> getTop3ThisMonth() {
-        LocalDate start = LocalDate.now().withDayOfMonth(1);
-        LocalDate end = LocalDate.now();
+    public String getTopAllTime() {
 
-        List<Object[]> results = salauatRepository.findTop3ThisMonth(start, end);
-        return results.stream()
+        List<Object[]> rawResults = salauatRepository.findTopAllTime();
+        rawResults.stream()
                 .map(r -> "@" + r[0] + " — " + r[1] + " салауат")
                 .toList();
+
+        StringBuilder sb = new StringBuilder("🏆 <b>Рейтинг (барлық салауат бойынша)</b>\n\n");
+
+        int rank = 1;
+        for (Object[] row : rawResults) {
+            String username = (String) row[0];
+            Long total = ((Number) row[1]).longValue();
+
+            String medal = switch (rank) {
+                case 1 -> "🥇";
+                case 2 -> "🥈";
+                case 3 -> "🥉";
+                default -> rank + ")";
+            };
+
+            String line = medal + " @" + username + " — " + total + " салауат\n";
+
+            sb.append(line);
+            rank ++;
+        }
+
+        return sb.toString();
     }
 
     public int getWeeklyCount(Long telegramId) {

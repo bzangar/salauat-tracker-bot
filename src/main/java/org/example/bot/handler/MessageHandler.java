@@ -5,6 +5,8 @@ import org.example.bot.Bot;
 import org.example.bot.BotSender;
 import org.example.salauat.SalauatService;
 import org.springframework.stereotype.Component;
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage;
+import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 @Component
 @RequiredArgsConstructor
@@ -13,13 +15,26 @@ public class MessageHandler {
     private final SalauatService salauatService;
     private final BotSender botSender;
 
-    public void handleMessage(Long chatId, String text, Bot bot) {
+    public void handleMessage(Long chatId, Integer messageId, String text, Bot bot) {
         if (text.matches("\\d+")) {
             int count = Integer.parseInt(text);
             salauatService.addSalauat(chatId, count);
-            botSender.send(chatId, "+ <b>" + count + "</b> салауат ✅ Машаллах!", bot);
+            botSender.send(chatId, "+ <b>" + count + "</b> салауат ✅ Машаллах!\n\n(Бүгінге " + salauatService.getToday(chatId)+ "салауат)", bot);
+            DeleteMessage deleteMessage = new DeleteMessage();
+            deleteMessage.setMessageId(messageId);
+            deleteMessage.setChatId(chatId);
+            try{
+                Thread.sleep(2000);
+                bot.execute(deleteMessage);
+            } catch (TelegramApiException e) {
+                throw new RuntimeException(e);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
         } else {
             botSender.send(chatId, "Салауат санын санмен жазып жіберші, өтініш 🙏", bot);
         }
     }
+
+
 }

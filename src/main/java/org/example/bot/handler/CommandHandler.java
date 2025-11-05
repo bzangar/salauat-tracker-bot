@@ -40,8 +40,13 @@ public class CommandHandler {
                 sender.send(chatId, "7 күнде  — <b>" + total + "</b> салауат 💫", bot);
             }
 
+            case "/top" -> {
+                String top = salauatService.getTopAllTime();
+                sender.send(chatId, top, bot);
+            }
 
-            case "/rating" -> {
+
+            case "/monthTop" -> {
                 String leaderboard = salauatService.getMonthlyRankingExternal(chatId);
 
 //                StringBuilder sb = new StringBuilder("🏆 *Рейтинг за месяц*\n\n");

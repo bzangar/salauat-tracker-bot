@@ -14,12 +14,10 @@ public interface SalauatRepo extends JpaRepository<Salauat, Long> {
     SELECT u.username, SUM(s.count)
     FROM Salauat s
     JOIN User u ON s.telegramId = u.telegramId
-    WHERE s.date BETWEEN :start AND :end
     GROUP BY u.username
     ORDER BY SUM(s.count) DESC
-    LIMIT 3
 """)
-    List<Object[]> findTop3ThisMonth(LocalDate start, LocalDate end);
+    List<Object[]> findTopAllTime();
 
     @Query("""
         SELECT SUM(s.count)

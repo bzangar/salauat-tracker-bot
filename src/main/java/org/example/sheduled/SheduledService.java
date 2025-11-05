@@ -21,7 +21,7 @@ public class SheduledService {
     private final Bot bot;
     private final HadithRepository hadithRepository;
 
-    @Scheduled(cron = "0 0 20 * * *") //cron = "0 0 20 * * *"
+    @Scheduled(cron = "0 0 10 * * *", zone = "Asia/Almaty") //cron = "0 0 20 * * *"
     public void sendDailyHadith(){
         var users = userService.getAllUsersCached();
 
@@ -54,7 +54,7 @@ public class SheduledService {
         }
     }
 
-    @Scheduled(cron = "0 0 10 * * FRI") //cron = "0 0 10 * * FRI"
+    @Scheduled(cron = "0 0 10 * * FRI", zone = "Asia/Almaty") //cron = "0 0 10 * * FRI"
     public void sendJumaNotification(){
         var users = userService.getAllUsersCached();
         String message = "\uD83C\uDF38 \uD83C\uDF19 <b>Жұма қабыл болсын, досым!</b> \uD83C\uDF19 \uD83C\uDF38\n";

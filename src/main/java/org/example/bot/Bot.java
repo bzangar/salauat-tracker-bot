@@ -13,6 +13,7 @@ import org.telegram.telegrambots.meta.api.objects.commands.BotCommand;
 import org.telegram.telegrambots.meta.api.objects.commands.scope.BotCommandScopeDefault;
 
 import java.util.List;
+import java.util.Objects;
 
 
 @Component
@@ -32,15 +33,19 @@ public class Bot extends TelegramLongPollingBot{
 
     @Override
     public void onUpdateReceived(Update update) {
-        String text = update.getMessage().getText();
+        String text = "";
+        if(Objects.nonNull(update)){
+            text = update.getMessage().getText();
+        }
         Long chatId = update.getMessage().getChatId();
+        var messageId = update.getMessage().getMessageId();
 
         if (text.startsWith("/")) {
             // если это команда (/start, /today...)
             commandHandler.handleCommand(update, this);
         } else {
             // если это обычное сообщение (например, “100”)
-            messageHandler.handleMessage(chatId, text, this);
+            messageHandler.handleMessage(chatId, messageId, text, this);
         }
     }
 
@@ -50,8 +55,9 @@ public class Bot extends TelegramLongPollingBot{
             List<BotCommand> commands = List.of(
                     new BotCommand("/start", "Ботты қосу"),
                     new BotCommand("/today", "Бүгінгі салауаттарым"),
+                    new BotCommand("/top", "Тарихи рейтинг"),
                     new BotCommand("/week", "Апталық салауаттарым"),
-                    new BotCommand("/rating", "Рейтинг")
+                    new BotCommand("/rating", "Айлық рейтинг ")
             );
 
             execute(new SetMyCommands(commands, new BotCommandScopeDefault(), null));
