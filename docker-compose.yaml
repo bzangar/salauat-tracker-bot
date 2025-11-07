@@ -1,7 +1,7 @@
 version: '3.8'
 services:
   app:
-    build: .
+    #build: .
     container_name: salauat_bot_app
     restart: always
     ports:
