@@ -1,65 +1,49 @@
-name: CI/CD Pipeline
+name: CI/CD - Spring Docker Deploy
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main   # деплой при пуше в main
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: Checkout source
         uses: actions/checkout@v4
 
-      - name: Set up JDK
-        uses: actions/setup-java@v4
-        with:
-          java-version: '17'
-          distribution: 'temurin'
-
-      - name: Build JAR
-        run: mvn clean package -DskipTests
-
-      - name: Log in to GHCR
-        uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GHCR_TOKEN }}
-
-      - name: Build and Push Docker image
+      - name: Build Docker image
         run: |
-          IMAGE_NAME=ghcr.io/${{ github.repository_owner }}/salauat-bot:latest
-          docker build -t $IMAGE_NAME .
-          docker push $IMAGE_NAME
+          docker build -t my-spring-bot:latest .
 
-  deploy:
-    runs-on: ubuntu-latest
-    needs: build
+      - name: Save Docker image to tar
+        run: docker save my-spring-bot:latest -o my-spring-bot.tar
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Copy docker-compose.yml
-        uses: appleboy/scp-action@master
+      - name: Copy Docker image to server
+        uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
-          source: "docker-compose.yml"
-          target: "/app/"
+          source: "my-spring-bot.tar"
+          target: "~/myapp"
 
-      - name: Deploy via SSH
-        uses: appleboy/ssh-action@v1.0.0
+      - name: Deploy on server
+        uses: appleboy/ssh-action@v0.1.10
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
           script: |
-            cd /app
-            echo ${{ secrets.GHCR_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-            docker pull ghcr.io/${{ github.repository_owner }}/salauat-bot:latest
-            docker-compose down
-            docker-compose up -d
+            cd ~/myapp
+            echo "🧹 Останавливаю старый контейнер..."
+            docker compose down || true
+
+            echo "📦 Загружаю новый Docker-образ..."
+            docker load -i my-spring-bot.tar
+
+            echo "🚀 Запускаю через docker-compose..."
+            docker compose up -d
+
+            echo "✅ Деплой завершён!"
