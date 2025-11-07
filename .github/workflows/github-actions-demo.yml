@@ -20,6 +20,9 @@ jobs:
       - name: Save Docker image to tar
         run: docker save my-spring-bot:latest -o my-spring-bot.tar
 
+      - name: Fix permissions
+        run: chmod 644 my-spring-bot.tar
+
       - name: Copy Docker image to server
         uses: appleboy/scp-action@v0.1.7
         with:
