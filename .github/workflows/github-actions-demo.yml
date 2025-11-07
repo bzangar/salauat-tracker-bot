@@ -1,37 +1,41 @@
-name: CI/CD - Spring Docker Deploy
+name: CI/CD - Spring Boot Docker Deploy
 
 on:
   push:
     branches:
-      - main   # деплой при пуше в main
+      - main  # деплой при пуше в main
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
+      # 1. Клонируем репозиторий
       - name: Checkout source
         uses: actions/checkout@v4
 
+      # 2. Настраиваем JDK для Maven (не обязательно для Docker build, но полезно)
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: 17
+
+      # 3. Строим Docker-образ на GitHub Actions
       - name: Build Docker image
-        run: |
-          docker build -t my-spring-bot:latest .
+        run: docker build -t salauat_bot_app:latest .
 
-      - name: Save Docker image to tar
-        run: docker save my-spring-bot:latest -o my-spring-bot.tar
-
-      - name: Fix permissions
-        run: chmod 644 my-spring-bot.tar
-
-      - name: Copy Docker image to server
+      # 4. Копируем весь проект на сервер (docker-compose.yml + Dockerfile)
+      - name: Copy project to server
         uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
-          source: "my-spring-bot.tar"
-          target: "~/myapp"
+          source: "."
+          target: "~/salauat_bot"
 
+      # 5. Перезапускаем docker-compose на сервере
       - name: Deploy on server
         uses: appleboy/ssh-action@v0.1.10
         with:
@@ -39,14 +43,11 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
           script: |
-            cd ~/myapp
-            echo "🧹 Останавливаю старый контейнер..."
+            cd ~/salauat_bot
+            echo "🧹 Останавливаю старые контейнеры..."
             docker compose down || true
 
-            echo "📦 Загружаю новый Docker-образ..."
-            docker load -i my-spring-bot.tar
-
-            echo "🚀 Запускаю через docker-compose..."
-            docker compose up -d
+            echo "🚀 Собираю и запускаю контейнеры через docker-compose..."
+            docker compose up -d --build
 
             echo "✅ Деплой завершён!"
