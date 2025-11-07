@@ -22,8 +22,7 @@ jobs:
           java-version: 17
 
       # 3. Строим Docker-образ на GitHub Actions
-      - name: Build Docker image
-        run: docker build -t salauat_bot_app:latest .
+
 
       # 4. Копируем весь проект на сервер (docker-compose.yml + Dockerfile)
       - name: Copy project to server
