@@ -44,9 +44,9 @@ jobs:
           script: |
             cd ~/salauat_bot
             echo "🧹 Останавливаю старые контейнеры..."
-            docker compose down || true
+            sudo docker compose down || true
 
             echo "🚀 Собираю и запускаю контейнеры через docker-compose..."
-            docker compose up -d --build
+            sudo docker compose up -d --build
 
             echo "✅ Деплой завершён!"
