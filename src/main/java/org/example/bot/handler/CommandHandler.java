@@ -21,7 +21,7 @@ public class CommandHandler {
 
 
     public void handleCommand(Update update, Bot bot) {
-        String command = update.getMessage().getText();
+        String command = update.getMessage().getText().trim();
         Long chatId = update.getMessage().getChatId();
         String username = update.getMessage().getFrom().getUserName();
         //Long userId = update.getMessage().getFrom().getId();
@@ -47,7 +47,7 @@ public class CommandHandler {
             }
 
 
-            case "/monthTop" -> {
+            case "/month_top" -> {
                 String leaderboard = salauatService.getMonthlyRankingExternal(username);
 
 //                StringBuilder sb = new StringBuilder("🏆 *Рейтинг за месяц*\n\n");

@@ -3,6 +3,7 @@ package org.example.bot;
 
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.example.bot.handler.CommandHandler;
 import org.example.bot.handler.MessageHandler;
 import org.springframework.stereotype.Component;
@@ -18,6 +19,7 @@ import java.util.Objects;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class Bot extends TelegramLongPollingBot{
 
     //@Value("${telegram.name}")
@@ -53,15 +55,15 @@ public class Bot extends TelegramLongPollingBot{
     public void initCommands() {
         try {
             List<BotCommand> commands = List.of(
-                    new BotCommand("/start", "Ботты қосу"),
-                    new BotCommand("/today", "Бүгінгі салауаттарым"),
-                    new BotCommand("/top", "Тарихи рейтинг"),
-                    new BotCommand("/week", "Апталық салауаттарым"),
-                    new BotCommand("/rating", "Айлық рейтинг ")
+                    new BotCommand("/start ", "Ботты қосу"),
+                    new BotCommand("/today ", "Бүгінгі салауаттарым"),
+                    new BotCommand("/top ", "Тарихи рейтинг"),
+                    new BotCommand("/week ", "Апталық салауаттарым"),
+                    new BotCommand("/month_top ", "Айлық рейтинг ")
             );
 
             execute(new SetMyCommands(commands, new BotCommandScopeDefault(), null));
-            System.out.println("✅ Команды успешно добавлены");
+            log.info("комманды добавлены");
         } catch (Exception e) {
             e.printStackTrace();
         }
