@@ -16,7 +16,7 @@ jobs:
 
       # 2. Строим Docker-образ
       - name: Build Docker image
-        run: docker build -t ghcr.io/${{ github.repository_owner }}/salauat_bot_app:1.0.0 .
+        run: docker build -t ghcr.io/${{ github.repository_owner }}/salauat_bot_app:${{ github.sha }} .
 
       # 3. Входим в GHCR
       - name: Log in to GitHub Container Registry
@@ -24,7 +24,7 @@ jobs:
 
       # 4. Пушим образ
       - name: Push Docker image to GHCR
-        run: docker push ghcr.io/${{ github.repository_owner }}/salauat_bot_app:1.0.0
+        run: docker push ghcr.io/${{ github.repository_owner }}/salauat_bot_app:${{ github.sha }}
 
       # 5. Деплой на сервер через docker-compose
       - name: Deploy on server
@@ -42,10 +42,11 @@ jobs:
             # 2. Останавливаем старые контейнеры
             docker compose down || true
 
-            # 3. Изменяем docker-compose.yml, чтобы использовать образ вместо сборки
-            sed -i 's|build: .|image: ghcr.io/${{ github.repository_owner }}/salauat_bot_app:1.0.0|' docker-compose.yml
+#            # 3. Изменяем docker-compose.yml, чтобы использовать образ вместо сборки
+#            sed -i 's|build: .|image: ghcr.io/${{ github.repository_owner }}/salauat_bot_app:1.0.0|' docker-compose.yml
 
             # 4. Подтягиваем свежий образ и запускаем контейнеры
+            export APP_IMAGE=ghcr.io/${{ github.repository_owner }}/salauat_bot_app:${{ github.sha }}
             docker compose pull
             docker compose up -d
 

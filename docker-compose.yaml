@@ -2,6 +2,7 @@ version: '3.8'
 services:
   app:
     #build: .
+    image: ${APP_IMAGE}
     container_name: salauat_bot_app
     restart: always
     ports:
