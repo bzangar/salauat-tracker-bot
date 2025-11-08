@@ -1,6 +1,7 @@
 package org.example.bot.handler;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.example.bot.Bot;
 import org.example.bot.BotSender;
 import org.example.salauat.SalauatService;
@@ -11,6 +12,7 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 
 import java.util.List;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class CommandHandler {
@@ -25,6 +27,7 @@ public class CommandHandler {
         Long chatId = update.getMessage().getChatId();
         String username = update.getMessage().getFrom().getUserName();
         //Long userId = update.getMessage().getFrom().getId();
+        log.info("ПРИШЛА КОММАНДА " + command);
 
         userService.registerIfAbsent(username);
 
