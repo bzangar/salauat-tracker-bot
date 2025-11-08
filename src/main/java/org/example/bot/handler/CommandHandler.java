@@ -4,12 +4,10 @@ import lombok.RequiredArgsConstructor;
 import org.example.bot.Bot;
 import org.example.bot.BotSender;
 import org.example.salauat.SalauatService;
-import org.example.user.UserRankingDto;
 import org.example.user.UserService;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
-import java.util.List;
 
 @Component
 @RequiredArgsConstructor
@@ -28,30 +26,50 @@ public class CommandHandler {
 
         userService.registerIfAbsent(username);
 
+
         switch (command) {
-            case "/start" -> sender.send(chatId, "Salauat Bot-қа қош келдіңіз!\n\nБүгін айтқан салауат санын жазып жіберіңіз 🙌", bot);
-            case "/today" -> {
+            case "/start", "/start@salauatt_bot" ->
+                    sender.send(chatId, "Salauat Bot-қа қош келдіңіз!\n\nБүгін айтқан салауат санын жазып жіберіңіз 🙌", bot);
+            case "/today", "/today@salauatt_bot" -> {
                 int total = salauatService.getToday(username);
                 sender.send(chatId, "Бүгін сіз <b>" + total + "</b> салауат айттыңыз 🌸", bot);
             }
-            case "/week" -> {
+            case "/week", "/week@salauatt_bot" -> {
                 int total = salauatService.getWeeklyCount(chatId);
                 sender.send(chatId, "7 күнде  — <b>" + total + "</b> салауат 💫", bot);
             }
-            case "/top" -> {
+            case "/top", "/top@salauatt_bot" -> {
                 String top = salauatService.getTopAllTime();
                 sender.send(chatId, top, bot);
             }
-            case "/month_top" -> {
+            case "/month_top", "/month_top@salauatt_bot" -> {
                 String leaderboard = salauatService.getMonthlyRankingExternal(username);
                 sender.send(chatId, leaderboard, bot);
             }
             default -> sender.send(chatId, "Белгісіз команда 🤔", bot);
         }
+
+//        switch (command) {
+//
+//            case "/start" -> sender.send(chatId, "Salauat Bot-қа қош келдіңіз!\n\nБүгін айтқан салауат санын жазып жіберіңіз 🙌", bot);
+//            case "/today" -> {
+//                int total = salauatService.getToday(username);
+//                sender.send(chatId, "Бүгін сіз <b>" + total + "</b> салауат айттыңыз 🌸", bot);
+//            }
+//            case "/week" -> {
+//                int total = salauatService.getWeeklyCount(chatId);
+//                sender.send(chatId, "7 күнде  — <b>" + total + "</b> салауат 💫", bot);
+//            }
+//            case "/top" -> {
+//                String top = salauatService.getTopAllTime();
+//                sender.send(chatId, top, bot);
+//            }
+//            case "/month_top" -> {
+//                String leaderboard = salauatService.getMonthlyRankingExternal(username);
+//                sender.send(chatId, leaderboard, bot);
+//            }
+//            default -> sender.send(chatId, "Белгісіз команда 🤔", bot);
+//        }
     }
-
-
-
-
 }
 
