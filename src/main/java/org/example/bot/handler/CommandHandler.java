@@ -30,26 +30,26 @@ public class CommandHandler {
 
 
 
-        if (command.equals("/start") || command.equals("/start@salauatt_bot")){
+        if (command.startsWith("/start")){
             sender.send(chatId, "Salauat Bot-қа қош келдіңіз!\n\nБүгін айтқан салауат санын жазып жіберіңіз 🙌", bot);
         }
 
-        else if (command.equals("/today") || command.equals("/today@salauatt_bot")){
+        else if (command.startsWith("/today")){
             int total = salauatService.getToday(username);
             sender.send(chatId, "Бүгін сіз <b>" + total + "</b> салауат айттыңыз 🌸", bot);
         }
 
-        else if (command.equals("/week") || command.equals("/week@salauatt_bot")){
+        else if (command.startsWith("/week")){
             int total = salauatService.getWeeklyCount(chatId);
             sender.send(chatId, "7 күнде  — <b>" + total + "</b> салауат 💫", bot);
         }
 
-        else if(command.equals("/top") || command.equals("/top@salauatt_bot")){
+        else if(command.startsWith("/top")){
             String top = salauatService.getTopAllTime();
             sender.send(chatId, top, bot);
         }
 
-        else if(command.equals("/month_top") || command.equals("/month_top@salauatt_bot")){
+        else if(command.startsWith("/month_top")){
             String leaderboard = salauatService.getMonthlyRankingExternal(username);
             sender.send(chatId, leaderboard, bot);
         }

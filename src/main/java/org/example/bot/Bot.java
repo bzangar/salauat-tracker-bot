@@ -63,7 +63,7 @@ public class Bot extends TelegramLongPollingBot{
             );
 
             execute(new SetMyCommands(commands, new BotCommandScopeDefault(), null));
-            log.info("комманды добавлены");
+            log.info("комманды добавлены ✅✅✅✅");
         } catch (Exception e) {
             e.printStackTrace();
         }
