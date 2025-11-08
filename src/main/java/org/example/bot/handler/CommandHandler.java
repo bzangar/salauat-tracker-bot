@@ -4,10 +4,12 @@ import lombok.RequiredArgsConstructor;
 import org.example.bot.Bot;
 import org.example.bot.BotSender;
 import org.example.salauat.SalauatService;
+import org.example.user.UserRankingDto;
 import org.example.user.UserService;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
+import java.util.List;
 
 @Component
 @RequiredArgsConstructor
@@ -27,26 +29,33 @@ public class CommandHandler {
         userService.registerIfAbsent(username);
 
 
-        switch (command) {
-            case "/start", "/start@salauatt_bot" ->
-                    sender.send(chatId, "Salauat Bot-қа қош келдіңіз!\n\nБүгін айтқан салауат санын жазып жіберіңіз 🙌", bot);
-            case "/today", "/today@salauatt_bot" -> {
-                int total = salauatService.getToday(username);
-                sender.send(chatId, "Бүгін сіз <b>" + total + "</b> салауат айттыңыз 🌸", bot);
-            }
-            case "/week", "/week@salauatt_bot" -> {
-                int total = salauatService.getWeeklyCount(chatId);
-                sender.send(chatId, "7 күнде  — <b>" + total + "</b> салауат 💫", bot);
-            }
-            case "/top", "/top@salauatt_bot" -> {
-                String top = salauatService.getTopAllTime();
-                sender.send(chatId, top, bot);
-            }
-            case "/month_top", "/month_top@salauatt_bot" -> {
-                String leaderboard = salauatService.getMonthlyRankingExternal(username);
-                sender.send(chatId, leaderboard, bot);
-            }
-            default -> sender.send(chatId, "Белгісіз команда 🤔", bot);
+
+        if (command.equals("/start") || command.equals("/start@salauatt_bot")){
+            sender.send(chatId, "Salauat Bot-қа қош келдіңіз!\n\nБүгін айтқан салауат санын жазып жіберіңіз 🙌", bot);
+        }
+
+        else if (command.equals("/today") || command.equals("/today@salauatt_bot")){
+            int total = salauatService.getToday(username);
+            sender.send(chatId, "Бүгін сіз <b>" + total + "</b> салауат айттыңыз 🌸", bot);
+        }
+
+        else if (command.equals("/week") || command.equals("/week@salauatt_bot")){
+            int total = salauatService.getWeeklyCount(chatId);
+            sender.send(chatId, "7 күнде  — <b>" + total + "</b> салауат 💫", bot);
+        }
+
+        else if(command.equals("/top") || command.equals("/top@salauatt_bot")){
+            String top = salauatService.getTopAllTime();
+            sender.send(chatId, top, bot);
+        }
+
+        else if(command.equals("/month_top") || command.equals("/month_top@salauatt_bot")){
+            String leaderboard = salauatService.getMonthlyRankingExternal(username);
+            sender.send(chatId, leaderboard, bot);
+        }
+
+        else {
+            sender.send(chatId, "Белгісіз команда 🤔", bot);
         }
 
 //        switch (command) {
