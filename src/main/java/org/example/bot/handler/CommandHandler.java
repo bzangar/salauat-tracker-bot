@@ -30,41 +30,22 @@ public class CommandHandler {
 
         switch (command) {
             case "/start" -> sender.send(chatId, "Salauat Bot-қа қош келдіңіз!\n\nБүгін айтқан салауат санын жазып жіберіңіз 🙌", bot);
-
             case "/today" -> {
                 int total = salauatService.getToday(username);
                 sender.send(chatId, "Бүгін сіз <b>" + total + "</b> салауат айттыңыз 🌸", bot);
             }
-
             case "/week" -> {
                 int total = salauatService.getWeeklyCount(chatId);
                 sender.send(chatId, "7 күнде  — <b>" + total + "</b> салауат 💫", bot);
             }
-
             case "/top" -> {
                 String top = salauatService.getTopAllTime();
                 sender.send(chatId, top, bot);
             }
-
-
             case "/month_top" -> {
                 String leaderboard = salauatService.getMonthlyRankingExternal(username);
-
-//                StringBuilder sb = new StringBuilder("🏆 *Рейтинг за месяц*\n\n");
-//                for (UserRankingDto dto : leaderboard) {
-//                    sb.append(dto.rank())
-//                            .append(") ")
-//                            .append(dto.username())
-//                            .append(" — ")
-//                            .append(dto.totalCount())
-//                            .append(" салауатов\n");
-//                }
-
-
                 sender.send(chatId, leaderboard, bot);
             }
-
-
             default -> sender.send(chatId, "Белгісіз команда 🤔", bot);
         }
     }
