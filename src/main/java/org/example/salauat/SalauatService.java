@@ -94,7 +94,6 @@ public class SalauatService {
             Long total = ((Number) row[1]).longValue();
             allRankings.add(new UserRankingDto(username, total, rank++));
         }
-
 //        // Найдём позицию текущего пользователя
 //        Integer userRank = null;
 //        for (UserRankingDto dto : allRankings) {
@@ -119,7 +118,6 @@ public class SalauatService {
 //        // Иначе: топ-3 + сам пользователь
 //        List<UserRankingDto> result = new ArrayList<>(allRankings.subList(0, 3));
 //        result.add(allRankings.get(userRank - 1)); // добавляем себя
-
         String message = format(allRankings, currentUsername);
         return message;
     }
@@ -152,6 +150,33 @@ public class SalauatService {
             if (dto.username().equalsIgnoreCase(currentUsername)) {
                 line = medal + " <b>@" + dto.username() + "</b> — <b>" + dto.totalCount() + "</b> салауат\n";
             }
+
+            sb.append(line);
+        }
+
+        return sb.toString();
+    }
+
+    public String getDailyRanking() {
+        LocalDate today = LocalDate.now();
+
+        List<Object[]> rawResults = salauatRepository.findDailyLeaderboard(today);
+
+        // Преобразуем в DTO с рангом
+        List<UserRankingDto> allRankings = new ArrayList<>();
+        int rank = 1;
+        for (Object[] row : rawResults) {
+            String username = (String) row[0];
+            Long total = ((Number) row[1]).longValue();
+            allRankings.add(new UserRankingDto(username, total, rank++));
+        }
+
+        StringBuilder sb = new StringBuilder("🏆 <b>Бүгінгі рейтинг </b>\n\n");
+
+        for (UserRankingDto dto : allRankings) {
+
+            String line = dto.rank() + ") @" + dto.username() + " — " + dto.totalCount() + " салауат\n";
+
 
             sb.append(line);
         }

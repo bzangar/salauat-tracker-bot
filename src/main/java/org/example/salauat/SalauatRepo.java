@@ -37,4 +37,14 @@ public interface SalauatRepo extends JpaRepository<Salauat, Long> {
     """)
     List<Object[]> findMonthlyLeaderboard(LocalDate start, LocalDate end);
 
+    @Query("""
+        SELECT u.username AS username, SUM(s.count) AS totalCount
+        FROM Salauat s
+        JOIN User u ON s.telegramId = u.username
+        WHERE s.date = :today
+        GROUP BY u.username
+        ORDER BY totalCount DESC
+    """)
+    List<Object[]> findDailyLeaderboard(LocalDate today);
+
 }

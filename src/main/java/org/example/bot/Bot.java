@@ -56,10 +56,11 @@ public class Bot extends TelegramLongPollingBot{
         try {
             List<BotCommand> commands = List.of(
                     new BotCommand("/start ", "Ботты қосу"),
-                    new BotCommand("/today ", "Бүгінгі салауаттарым"),
+                    //new BotCommand("/today ", "Бүгінгі салауаттарым"),
                     new BotCommand("/top ", "Тарихи рейтинг"),
-                    new BotCommand("/week ", "Апталық салауаттарым"),
-                    new BotCommand("/month_top ", "Айлық рейтинг ")
+                    //new BotCommand("/week ", "Апталық салауаттарым"),
+                    new BotCommand("/top_today ", "Айлық рейтинг "),
+                    new BotCommand("/top_month ", "Айлық рейтинг ")
             );
 
             execute(new SetMyCommands(commands, new BotCommandScopeDefault(), null));

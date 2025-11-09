@@ -42,9 +42,9 @@ public class CommandHandler {
             sender.send(chatId, "Бүгін сіз <b>" + total + "</b> салауат айттыңыз 🌸", bot);
         }
 
-        else if (command.startsWith("/today_top")){
-            int total = salauatService.getToday(username);
-            sender.send(chatId, "Бүгін сіз <b>" + total + "</b> салауат айттыңыз 🌸", bot);
+        else if (command.startsWith("/top_today")){
+            String leaderboard = salauatService.getDailyRanking();
+            sender.send(chatId, leaderboard, bot);
         }
 
         else if (command.startsWith("/week")){
@@ -57,7 +57,7 @@ public class CommandHandler {
             sender.send(chatId, top, bot);
         }
 
-        else if(command.startsWith("/month_top")){
+        else if(command.startsWith("/top_month")){
             String leaderboard = salauatService.getMonthlyRankingExternal(username);
             sender.send(chatId, leaderboard, bot);
         }
@@ -65,28 +65,6 @@ public class CommandHandler {
         else {
             sender.send(chatId, "Белгісіз команда 🤔", bot);
         }
-
-//        switch (command) {
-//
-//            case "/start" -> sender.send(chatId, "Salauat Bot-қа қош келдіңіз!\n\nБүгін айтқан салауат санын жазып жіберіңіз 🙌", bot);
-//            case "/today" -> {
-//                int total = salauatService.getToday(username);
-//                sender.send(chatId, "Бүгін сіз <b>" + total + "</b> салауат айттыңыз 🌸", bot);
-//            }
-//            case "/week" -> {
-//                int total = salauatService.getWeeklyCount(chatId);
-//                sender.send(chatId, "7 күнде  — <b>" + total + "</b> салауат 💫", bot);
-//            }
-//            case "/top" -> {
-//                String top = salauatService.getTopAllTime();
-//                sender.send(chatId, top, bot);
-//            }
-//            case "/month_top" -> {
-//                String leaderboard = salauatService.getMonthlyRankingExternal(username);
-//                sender.send(chatId, leaderboard, bot);
-//            }
-//            default -> sender.send(chatId, "Белгісіз команда 🤔", bot);
-//        }
     }
 }
 
