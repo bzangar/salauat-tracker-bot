@@ -28,7 +28,7 @@ jobs:
             git pull origin main
 
             # 2. Останавливаем старые контейнеры
-            docker compose down
+            docker compose down || true
 
             docker compose up --build -d
 
