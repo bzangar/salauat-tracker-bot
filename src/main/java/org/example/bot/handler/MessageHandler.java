@@ -41,7 +41,7 @@ public class MessageHandler {
             botMessage.setMessageId(sentMessage.getMessageId());
             botMessage.setChatId(sentMessage.getChatId());
             try{
-                Thread.sleep(2000);
+                Thread.sleep(10000);
                 bot.execute(deleteMessage);
                 bot.execute(botMessage);
             } catch (TelegramApiException e) {
