@@ -21,12 +21,12 @@ public class SheduledService {
     private final Bot bot;
     private final HadithRepository hadithRepository;
 
-    @Scheduled(cron = "0 0 10 * * *", zone = "Asia/Almaty") //cron = "0 0 20 * * *"
+    @Scheduled(cron = "0 45 18 * * *", zone = "Asia/Almaty") //cron = "0 0 20 * * *"
     public void sendDailyHadith(){
         var users = userService.getAllUsersCached();
 
         int dayOfYear = LocalDate.now().getDayOfYear();
-        int hadithIndex = dayOfYear % 40;
+        int hadithIndex = dayOfYear % hadithRepository.findAll().size();
 
         Hadith hadith = hadithRepository.findById(hadithIndex)
                 .orElse(Hadith.builder()
