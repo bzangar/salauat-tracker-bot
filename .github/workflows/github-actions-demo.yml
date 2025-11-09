@@ -23,7 +23,7 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           port: 22
           script: |
-            cd ~/salauat_bot
+            cd ~/salauat-tracker-bot
 
             echo "🌀 Обновляем код из GitHub..."
             git fetch origin main
