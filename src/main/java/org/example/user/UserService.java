@@ -16,7 +16,6 @@ public class UserService {
         return userRepository.findByUsername(username)
                 .orElseGet(() -> {
                     User newUser = User.builder()
-                            .telegramId(chatId)
                             .username(username)
                             .build();
                     return userRepository.save(newUser);
