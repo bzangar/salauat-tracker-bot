@@ -43,6 +43,7 @@ public class MessageHandler {
             try{
                 Thread.sleep(2000);
                 bot.execute(deleteMessage);
+                bot.execute(botMessage);
             } catch (TelegramApiException e) {
                 throw new RuntimeException(e);
             } catch (InterruptedException e) {
