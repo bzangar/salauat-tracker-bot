@@ -7,6 +7,7 @@ import java.time.chrono.HijrahChronology;
 import java.time.chrono.HijrahDate;
 import java.time.temporal.ChronoField;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 
 
 @Service
@@ -15,24 +16,31 @@ public class HolidayService {
     public String getDaysLeftToHolidays() {
         HijrahDate hijrahDate = HijrahDate.now();
         int currentHijraYear = hijrahDate.get(ChronoField.YEAR);
+
         HijrahDate ramadan = HijrahDate.of(currentHijraYear, 9, 1);
+        HijrahDate maulit = HijrahDate.of(currentHijraYear, 3, 12);
+        List<Holiday> holidays = List.of(new Holiday("\uD83E\uDD32\uD83C\uDF19\uD83D\uDD4C","Рамазанға", ramadan), new Holiday("\uD83D\uDC96\uD83D\uDD4A\uFE0Fﷺ", "Мәулітке", maulit));
 
-        if(ramadan.isBefore(hijrahDate)){
-            ramadan = ramadan.plus(1, ChronoUnit.YEARS);
+        StringBuilder sb = new StringBuilder();
+
+        for(Holiday holiday: holidays){
+            if(holiday.getHijrahDate().isBefore(hijrahDate)){
+                holiday.getHijrahDate().plus(1, ChronoUnit.YEARS);
+            }
+
+            LocalDate today = LocalDate.now();
+            LocalDate holidayByGregorean = LocalDate.from(holiday.getHijrahDate());
+
+            long daysLeft = ChronoUnit.DAYS.between(today, holidayByGregorean);
+
+            sb.append(holiday.getEmoji() + " " + holiday.getName() + " <b>" + daysLeft + "</b> күн қалды\n\n");
         }
 
-        LocalDate ramadanByGregorean = LocalDate.from(ramadan);
-        LocalDate today = LocalDate.now();
+        return sb.toString();
+    }
 
-        long daysLeft = ChronoUnit.DAYS.between(today, ramadanByGregorean);
-        String emoji;
-
-        if (daysLeft <= 30) {
-            emoji = "\uD83E\uDD29\uD83E\uDD29"; // 🤩
-        } else {
-            emoji = "\uD83D\uDE0A\uD83D\uDE0A"; // 😊
-        }
-
-        return "\uD83C\uDF19 Рамазанға <b>" + daysLeft + "</b> күн қалды " + emoji;
+    public static void main(String[] args) {
+        HolidayService holidayService = new HolidayService();
+        System.out.println(holidayService.getDaysLeftToHolidays());
     }
 }
