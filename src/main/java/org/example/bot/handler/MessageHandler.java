@@ -8,6 +8,7 @@ import org.example.user.UserService;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage;
 import org.telegram.telegrambots.meta.api.objects.ChatMemberUpdated;
+import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
@@ -21,9 +22,9 @@ public class MessageHandler {
 
     public void handleMessage(Update update, Bot bot) {
         Integer messageId = update.getMessage().getMessageId();
-            String text = update.getMessage().getText();
-            Long chatId = update.getMessage().getChatId();
-            //Long userId = update.getMessage().getFrom().getId();
+        String text = update.getMessage().getText();
+        Long chatId = update.getMessage().getChatId();
+        //Long userId = update.getMessage().getFrom().getId();
 
 
         String username = update.getMessage().getFrom().getUserName();
@@ -32,18 +33,22 @@ public class MessageHandler {
         if (text.matches("\\d+")) {
             int count = Integer.parseInt(text);
             salauatService.addSalauat(username, count);
-            botSender.send(chatId, "+ <b>" + count + "</b> салауат ✅ Машаллах!\n\n(Бүгінге " + salauatService.getToday(username)+ " салауат)", bot);
+            Message sentMessage = botSender.send(chatId, "+ <b>" + count + "</b> салауат ✅ Машаллах!\n\n(Бүгінге " + salauatService.getToday(username)+ " салауат)", bot);
             DeleteMessage deleteMessage = new DeleteMessage();
             deleteMessage.setMessageId(messageId);
             deleteMessage.setChatId(chatId);
-//            try{
-//                Thread.sleep(20000);
-//                bot.execute(deleteMessage);
-//            } catch (TelegramApiException e) {
-//                throw new RuntimeException(e);
-//            } catch (InterruptedException e) {
-//                throw new RuntimeException(e);
-//            }
+
+            DeleteMessage botMessage = new DeleteMessage();
+            botMessage.setMessageId(sentMessage.getMessageId());
+            botMessage.setChatId(sentMessage.getChatId());
+            try{
+                Thread.sleep(2000);
+                bot.execute(deleteMessage);
+            } catch (TelegramApiException e) {
+                throw new RuntimeException(e);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
