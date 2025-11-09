@@ -42,6 +42,8 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           script: |
             cd ~/salauat-tracker-bot
+            
+            git pull origin main
 
             # Указываем образ с тегом SHA
             export APP_IMAGE=ghcr.io/bzangar/salauat-tracker-bot:${SHA}
