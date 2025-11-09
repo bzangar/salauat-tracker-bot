@@ -10,7 +10,6 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 @RequiredArgsConstructor
 public class BotSender {
 
-    @Async
     public Message send(Long chatId, String text, Bot bot) {
         try {
             Message m = bot.execute(SendMessage.builder()
