@@ -19,13 +19,13 @@ public class HolidayService {
 
         HijrahDate ramadan = HijrahDate.of(currentHijraYear, 9, 1);
         HijrahDate maulit = HijrahDate.of(currentHijraYear, 3, 12);
-        List<Holiday> holidays = List.of(new Holiday("\uD83E\uDD32\uD83C\uDF19\uD83D\uDD4C","Рамазанға", ramadan), new Holiday("\uD83D\uDC96\uD83D\uDD4A\uFE0Fﷺ", "Мәулітке", maulit));
+        List<Holiday> holidays = List.of(new Holiday("\uD83C\uDF19","Рамазанға", ramadan), new Holiday("\uD83D\uDD4A\uFE0F", "Мәулітке", maulit));
 
         StringBuilder sb = new StringBuilder();
 
         for(Holiday holiday: holidays){
             if(holiday.getHijrahDate().isBefore(hijrahDate)){
-                holiday.getHijrahDate().plus(1, ChronoUnit.YEARS);
+                holiday.setHijrahDate(holiday.getHijrahDate().plus(1, ChronoUnit.YEARS));
             }
 
             LocalDate today = LocalDate.now();
