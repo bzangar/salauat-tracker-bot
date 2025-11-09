@@ -42,6 +42,11 @@ public class CommandHandler {
             sender.send(chatId, "Бүгін сіз <b>" + total + "</b> салауат айттыңыз 🌸", bot);
         }
 
+        else if (command.startsWith("/today_top")){
+            int total = salauatService.getToday(username);
+            sender.send(chatId, "Бүгін сіз <b>" + total + "</b> салауат айттыңыз 🌸", bot);
+        }
+
         else if (command.startsWith("/week")){
             int total = salauatService.getWeeklyCount(chatId);
             sender.send(chatId, "7 күнде  — <b>" + total + "</b> салауат 💫", bot);
