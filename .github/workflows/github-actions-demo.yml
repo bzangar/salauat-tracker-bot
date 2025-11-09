@@ -10,12 +10,30 @@ jobs:
     runs-on: ubuntu-22.04
 
     steps:
-      # 1. Клонируем код
+      # 1️⃣ Клонируем репозиторий
       - name: Checkout
         uses: actions/checkout@v4
 
+      # 2️⃣ Логинимся в GHCR
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GHCR_TOKEN }}
 
-      # 5. Деплой на сервер через docker-compose
+      # 3️⃣ Получаем SHA текущего коммита
+      - name: Set image tag
+        id: vars
+        run: echo "SHA=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+
+      # 4️⃣ Собираем и пушим Docker-образ
+      - name: Build and push Docker image
+        run: |
+          docker build -t ghcr.io/bzangar/salauat-tracker-bot:${SHA} .
+          docker push ghcr.io/bzangar/salauat-tracker-bot:${SHA}
+
+      # 5️⃣ Деплой на сервер через SSH и docker-compose
       - name: Deploy on server
         uses: appleboy/ssh-action@v0.1.10
         with:
@@ -24,13 +42,17 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           script: |
             cd ~/salauat-tracker-bot
-            
-            git fetch origin main
-            git reset --hard origin/main
 
-            # 2. Останавливаем старые контейнеры
+            # Указываем образ с тегом SHA
+            export APP_IMAGE=ghcr.io/bzangar/salauat-tracker-bot:${SHA}
+
+            # Останавливаем старые контейнеры
             docker compose down || true
 
+            # Подтягиваем новый образ
+            docker pull $APP_IMAGE
+
+            # Запускаем контейнеры с новым образом
             docker compose up -d
 
             echo "✅ Деплой завершён!"
