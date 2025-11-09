@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.bot.Bot;
 import org.example.bot.BotSender;
+import org.example.holiday.HolidayService;
 import org.example.salauat.SalauatService;
 import org.example.user.UserRankingDto;
 import org.example.user.UserService;
@@ -20,7 +21,7 @@ public class CommandHandler {
     private final SalauatService salauatService;
     private final UserService userService;
     private final BotSender sender; // отдельный класс для отправки сообщений (чтобы не дублировать execute)
-
+    private final HolidayService holidayService;
 
     public void handleCommand(Update update, Bot bot) {
         String command = update.getMessage().getText().trim();
@@ -60,6 +61,11 @@ public class CommandHandler {
         else if(command.startsWith("/top_month")){
             String leaderboard = salauatService.getMonthlyRankingExternal(username);
             sender.send(chatId, leaderboard, bot);
+        }
+
+        else if(command.startsWith("/holidays")){
+            String message = holidayService.getDaysLeftToHolidays();
+            sender.send(chatId, message, bot);
         }
 
         else {
