@@ -29,7 +29,7 @@ public class CommandHandler {
         //Long userId = update.getMessage().getFrom().getId();
         log.info("ПРИШЛА КОММАНДА " + command);
 
-        userService.registerIfAbsent(username);
+        userService.registerIfAbsent(username, chatId);
 
 
 

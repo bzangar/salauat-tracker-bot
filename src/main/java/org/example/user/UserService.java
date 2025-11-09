@@ -12,10 +12,11 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    public User registerIfAbsent(String username) {
+    public User registerIfAbsent(String username, Long chatId) {
         return userRepository.findByUsername(username)
                 .orElseGet(() -> {
                     User newUser = User.builder()
+                            .telegramId(chatId)
                             .username(username)
                             .build();
                     return userRepository.save(newUser);

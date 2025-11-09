@@ -27,7 +27,7 @@ public class MessageHandler {
 
 
         String username = update.getMessage().getFrom().getUserName();
-        userService.registerIfAbsent(username);
+        userService.registerIfAbsent(username, chatId);
 
         if (text.matches("\\d+")) {
             int count = Integer.parseInt(text);
