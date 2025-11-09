@@ -21,7 +21,7 @@ public class SheduledService {
     private final Bot bot;
     private final HadithRepository hadithRepository;
 
-    @Scheduled(cron = "0 45 18 * * *", zone = "Asia/Almaty") //cron = "0 0 20 * * *"
+    @Scheduled(cron = "0 57 18 * * *", zone = "Asia/Almaty") //cron = "0 0 20 * * *"
     public void sendDailyHadith(){
         var users = userService.getAllUsersCached();
 
