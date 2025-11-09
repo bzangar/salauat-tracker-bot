@@ -28,8 +28,8 @@ jobs:
             git pull origin main
 
             # 2. Останавливаем старые контейнеры
-            docker compose down || true
+            docker compose down
 
-            docker compose up -d
+            docker compose up --build -d
 
             echo "✅ Деплой завершён!"
