@@ -59,7 +59,7 @@ public class Bot extends TelegramLongPollingBot{
                     //new BotCommand("/today ", "Бүгінгі салауаттарым"),
                     new BotCommand("/top ", "Тарихи рейтинг"),
                     //new BotCommand("/week ", "Апталық салауаттарым"),
-                    new BotCommand("/top_today ", "Айлық рейтинг "),
+                    new BotCommand("/top_today ", "Күндік рейтинг "),
                     new BotCommand("/top_month ", "Айлық рейтинг ")
             );
 
