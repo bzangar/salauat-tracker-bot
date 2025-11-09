@@ -36,14 +36,14 @@ public class MessageHandler {
             DeleteMessage deleteMessage = new DeleteMessage();
             deleteMessage.setMessageId(messageId);
             deleteMessage.setChatId(chatId);
-            try{
-                Thread.sleep(20000);
-                bot.execute(deleteMessage);
-            } catch (TelegramApiException e) {
-                throw new RuntimeException(e);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
+//            try{
+//                Thread.sleep(20000);
+//                bot.execute(deleteMessage);
+//            } catch (TelegramApiException e) {
+//                throw new RuntimeException(e);
+//            } catch (InterruptedException e) {
+//                throw new RuntimeException(e);
+//            }
         }
     }
 
