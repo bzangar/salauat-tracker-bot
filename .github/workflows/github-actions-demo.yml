@@ -1,4 +1,4 @@
-name: CI/CD - Spring Boot Telegram Bot
+name: CI/CD - Spring Boot Docker Deploy
 
 on:
   push:
@@ -6,33 +6,31 @@ on:
       - main
 
 jobs:
-  deploy:
-    runs-on: ubuntu-latest
+  build-and-deploy:
+    runs-on: ubuntu-22.04
 
     steps:
-      # 1. Клонируем репозиторий
-      - name: Checkout repository
+      # 1. Клонируем код
+      - name: Checkout
         uses: actions/checkout@v4
 
-      # 2. Подключаемся к серверу и деплоим
-      - name: Deploy to server via SSH
+
+      # 5. Деплой на сервер через docker-compose
+      - name: Deploy on server
         uses: appleboy/ssh-action@v0.1.10
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
-          port: 22
           script: |
             cd ~/salauat-tracker-bot
-
-            echo "🌀 Обновляем код из GitHub..."
+            
             git fetch origin main
             git reset --hard origin/main
 
-            echo "🐳 Пересобираем и перезапускаем контейнеры..."
-            docker compose down
-            docker compose pull || true
-            docker compose build --no-cache
+            # 2. Останавливаем старые контейнеры
+            docker compose down || true
+
             docker compose up -d
 
             echo "✅ Деплой завершён!"
