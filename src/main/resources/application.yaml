@@ -18,8 +18,8 @@ spring:
       port: ${REDIS_PORT:6379}
 
 telegram:
-  token: 8298807960:AAFEW-JDsAIIriG16OmqyLIkD-9a-BdJvPE
-  name: salauat-bot
+  token: ${BOT_TOKEN}
+  name: ${BOT_USERNAME}
 
 logging:
   level:
